@@ -104,7 +104,7 @@ class SiiBoletas
         return $status;
     }
 
-    function generaBoleta($data, $tipoDte, $folio, $fechaEmision, $tasaIVA, $rutReceptor = '66666666-6')
+    function generaBoleta($data, $tipoDte, $folio, $fechaEmision, $tasaIVA, $rutReceptor = '66666666-6', $razonReceptor = "RUT GENERICO")
     {
         $dte = [
             'Encabezado' => [
@@ -118,7 +118,8 @@ class SiiBoletas
                     'RUTEmisor' => $this->_timbre->rutEmisor
                 ],
                 'Receptor' => [
-                    'RUTRecep' => $rutReceptor
+                    'RUTRecep' => $rutReceptor,
+                    'RznSocRecep' => $razonReceptor
                 ],
                 'Totales' => [
                     'MntNeto' => 0,
