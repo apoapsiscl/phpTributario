@@ -1,0 +1,15 @@
+https://www.sii.cl/factura_electronica/factura_mercado/boletas_elec_020.pdf
+
+https://www.sii.cl/factura_electronica/instructivo_emision.pdf
+
+https://www.sii.cl/normativa_legislacion/resoluciones/2020/reso74.pdf
+
+https://www.sii.cl/factura_electronica/factura_mercado/envio.pdf
+
+https://www.sii.cl/factura_electronica/factura_mercado/autenticacion.pdf
+
+https://www.sii.cl/servicios_online/diagrama_estados_be.pdf
+
+https://www4c.sii.cl/bolcoreinternetui/api/
+
+https://www.cryptosys.net/pki/xmldsig-ChileSII.html
