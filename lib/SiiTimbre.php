@@ -55,7 +55,7 @@ class SiiTimbre
         $this->folioDesde = intval((string)$xmlfolio->CAF->DA->RNG->D);
         $this->folioHasta = intval((string)$xmlfolio->CAF->DA->RNG->H);
 
-        $this->_pkeyFolios = $xmlfolio->RSASK;
+        $this->_pkeyFolios = (string)$xmlfolio->RSASK;
     }
 
     public function timbraBoletas($boletas)
