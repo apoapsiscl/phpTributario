@@ -117,10 +117,23 @@ $data = [
 $boleta = $bol->generaBoleta($data, 39, 6, date('Y-m-d'), 19);
 $boletas[] = $boleta;
 
-// Timbra, firma y envia las boletas
-$resultado = $bol->enviaBoletas($boletas);
+// Genera las boletas en formato XML
+$boletasXml = $bol->generaXmlBoletas($boletas);
+
+// Aplica el timbre electronico
+$timbradas = $bol->timbraBoletas($boletasXml);
+
+// Firma digital en cada boleta
+$firmadas = $bol->firmaBoletas($timbradas);
+
+// Inserta las boletas firmadas en el sobre para el envio
+$sobreBoletas = $bol->preparaSobreEnvio($firmadas);
+
+// Envia el sobre al SII
+$resultado = $bol->enviaBoletas($sobreBoletas);
 
 // Obtiene estado del envio anterior
+// El SII demora alrededor de 1 minuto en procesar la(s) boleta(s)
 $resultado = $bol->getEstadoEnvio($resultado->trackid);
 
 // ---------------------------------------------------------------
@@ -155,5 +168,11 @@ $data = [
 
 $rv = new SiiReporteVentas('certificado.pfx', 'password', 'FoliosSII1234567890.xml');
 
-// Firma y envia el RCV
-$resultado = $rv->generaConsumoFolio($data);
+// Genera y firma el RVD
+$strXmlReporteVentas = $rv->generaConsumoFolio($data);
+
+// Envia el RVD
+$resultado = $rv->enviaConsumoFolio($strXmlReporteVentas);
+
+
+

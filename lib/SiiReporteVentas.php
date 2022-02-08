@@ -99,7 +99,12 @@ class SiiReporteVentas
         
         $ConsumoFoliosFirmadoStr = str_replace("xmlns:xmlns=", "xmlns=", $ConsumoFoliosFirmado->asXML());
 
-        $response = $this->_conexion->enviaDocumentoOld($ConsumoFoliosFirmadoStr, $this->_firma->rutEnvia, $this->_timbre->rutEmisor, true);
+        return $ConsumoFoliosFirmadoStr;
+    }
+
+    public function enviaConsumoFolio($documentoXML)
+    {
+        $response = $this->_conexion->enviaDocumentoOld($documentoXML, $this->_firma->rutEnvia, $this->_timbre->rutEmisor, true);
 
         return $response;
     }

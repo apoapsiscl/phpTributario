@@ -41,12 +41,17 @@ class SiiBoletas
         $this->_timbre = new SiiTimbre($archivo_caf);
     }
 
-    function enviaBoletas($data)
+    public function enviaBoletas($StrXmlEnvia)
     {
-        $boletasXml = $this->_generaXmlBoletas($data);
-        $boletastimbradas = $this->_timbre->timbraBoletas($boletasXml);
-        $DTEs = $this->_firmaBoletas($boletastimbradas);
+        $response = $this->_conexion->enviaDocumentoBoleta($StrXmlEnvia, $this->_firma->rutEnvia, $this->_timbre->rutEmisor);
 
+        $json = json_decode($response);
+
+        return $json;
+    }
+
+    public function preparaSobreEnvio($boletasXML)
+    {
         $EnvioBOLETA = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<EnvioBOLETA xmlns=\"http://www.sii.cl/SiiDte\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sii.cl/SiiDte EnvioBOLETA_v11.xsd\" version=\"1.0\">\n</EnvioBOLETA>");
         $SetDTE = new SimpleXMLElement("<SetDTE ID=\"SetDoc\"></SetDTE>");
         $Caratula = new SimpleXMLElement("<Caratula version=\"1.0\"><RutEmisor/><RutEnvia/><RutReceptor/><FchResol/><NroResol/><TmstFirmaEnv/><SubTotDTE><TpoDTE/><NroDTE/></SubTotDTE></Caratula>");
@@ -58,7 +63,7 @@ class SiiBoletas
         $Caratula->NroResol = '0';
         $Caratula->TmstFirmaEnv = date('Y-m-d\TH:i:s');
         $Caratula->SubTotDTE->TpoDTE = 39;
-        $Caratula->SubTotDTE->NroDTE = count($DTEs);
+        $Caratula->SubTotDTE->NroDTE = count($boletasXML);
 
         // Inserta Caratula en SetDTE
         $dom     = dom_import_simplexml($SetDTE);
@@ -69,7 +74,7 @@ class SiiBoletas
         $dom->appendChild($import);
 
         // Inserta DTEs en SetDTE
-        foreach ($DTEs as $DTE) {
+        foreach ($boletasXML as $DTE) {
             $dom     = dom_import_simplexml($SetDTE);
             $import  = $dom->ownerDocument->importNode(
                 dom_import_simplexml($DTE),
@@ -90,21 +95,17 @@ class SiiBoletas
 
         $EnvioBOLETA_firmado_str = str_replace("xmlns:xmlns=", "xmlns=", $EnvioBOLETA_firmado->asXML());
 
-        $response = $this->_conexion->enviaDocumentoBoleta($EnvioBOLETA_firmado_str, $this->_firma->rutEnvia, $this->_timbre->rutEmisor);
-
-        $json = json_decode($response);
-
-        return $json;
+        return $EnvioBOLETA_firmado_str;
     }
 
-    function getEstadoEnvio($trackid)
+    public function getEstadoEnvio($trackid)
     {
         $status = $this->_conexion->getTrackidStatus($trackid, $this->_timbre->rutEmisor);
 
         return $status;
     }
 
-    function generaBoleta($data, $tipoDte, $folio, $fechaEmision, $tasaIVA, $rutReceptor = '66666666-6', $razonReceptor = "RUT GENERICO")
+    public function generaBoleta($data, $tipoDte, $folio, $fechaEmision, $tasaIVA, $rutReceptor = '66666666-6', $razonReceptor = "RUT GENERICO")
     {
         $dte = [
             'Encabezado' => [
@@ -216,7 +217,7 @@ class SiiBoletas
         return $dte;
     }
 
-    private function _generaXmlBoletas($data)
+    public function generaXmlBoletas($data)
     {
         $boletas = [];
 
@@ -234,7 +235,15 @@ class SiiBoletas
         return $boletas;
     }
 
-    private function _firmaBoletas($boletas)
+    public function timbraBoletas($boletas)
+    {
+        // No es necesario un foreach ya que timbraBoletas de la clase SiiTimbre recibe un array
+        $boletastimbradas = $this->_timbre->timbraBoletas($boletas);
+
+        return $boletastimbradas;
+    }
+
+    public function firmaBoletas($boletas)
     {
         $boletasfirmadas = [];
 
