@@ -240,7 +240,7 @@ class SiiConexion
         $client = new GuzzleHttp\Client(['base_uri' => $this->_servidorSiiEnvioOtro]);
         $res = $client->request(
             'POST', 'cgi_dte/UPL/DTEUpload', [
-                'debug' => true,
+                //'debug' => true,
                 'http_errors' => false,
                 'headers' => [
                     //'Accept' => 'application/json',
@@ -300,7 +300,7 @@ class SiiConexion
         $client = new GuzzleHttp\Client(['base_uri' => $this->_servidorSiiEnvioBoleta]);
         $res = $client->request(
             'POST', 'boleta.electronica.envio', [
-                'debug' => true,
+                //'debug' => true,
                 'http_errors' => false,
                 'headers' => [
                     'Accept' => 'application/json',
