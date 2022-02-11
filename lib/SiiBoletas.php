@@ -134,7 +134,7 @@ class SiiBoletas
         ];
 
         $items = $data['Items'];
-        $referencias = $data['Referencias'];
+        $referencias = $data['Referencias'] ?? [];
 
         $totalNeto = 0;
         $totalExento = 0;
