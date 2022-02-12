@@ -34,10 +34,10 @@ class SiiBoletas
     private $_firma = null;
     private $_timbre = null;
 
-    public function __construct($archivo_cert, $password_cert, $archivo_caf)
+    public function __construct($archivo_cert, $password_cert, $archivo_caf, $servidor = 'Certificacion')
     {
         $this->_firma = new SiiFirma($archivo_cert, $password_cert);
-        $this->_conexion = new SiiConexion('Certificacion', $this->_firma);
+        $this->_conexion = new SiiConexion($servidor, $this->_firma);
         $this->_timbre = new SiiTimbre($archivo_caf);
     }
 
