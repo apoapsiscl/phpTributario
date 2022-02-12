@@ -50,7 +50,7 @@ class SiiBoletas
         return $json;
     }
 
-    public function preparaSobreEnvio($boletasXML)
+    public function preparaSobreEnvio($boletasXML, $fechaResolucion = '2022-02-02', $nroResolucion = '0')
     {
         $EnvioBOLETA = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<EnvioBOLETA xmlns=\"http://www.sii.cl/SiiDte\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sii.cl/SiiDte EnvioBOLETA_v11.xsd\" version=\"1.0\">\n</EnvioBOLETA>");
         $SetDTE = new SimpleXMLElement("<SetDTE ID=\"SetDoc\"></SetDTE>");
@@ -59,8 +59,8 @@ class SiiBoletas
         $Caratula->RutEmisor = $this->_timbre->rutEmisor;
         $Caratula->RutEnvia = $this->_firma->rutEnvia;
         $Caratula->RutReceptor = '60803000-K';
-        $Caratula->FchResol = '2022-02-02';
-        $Caratula->NroResol = '0';
+        $Caratula->FchResol = $fechaResolucion;
+        $Caratula->NroResol = $nroResolucion;
         $Caratula->TmstFirmaEnv = date('Y-m-d\TH:i:s');
         $Caratula->SubTotDTE->TpoDTE = 39;
         $Caratula->SubTotDTE->NroDTE = count($boletasXML);
