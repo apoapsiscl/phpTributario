@@ -75,18 +75,18 @@ class SiiConexion
             throw new Exception("Error obteniendo semilla, HTTP!=OK");
         }
 
-        if ($res->getHeader('content-type')[0] != 'application/xml') {
-            throw new Exception("Error obteniendo semilla, respuesta!=xml");
-        }
-
         $response = $res->getBody()->getContents();
+
+        if ($res->getHeader('content-type')[0] != 'application/xml') {
+            throw new Exception("Error obteniendo semilla, respuesta!=xml, response=$response");
+        }
 
         $xml = new SimpleXMLElement($response);
 
         $estado = (string)$xml->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0];
 
         if ($estado !== '00') {
-            throw new Exception("Error obteniendo semilla, estado!=00");
+            throw new Exception("Error obteniendo semilla, estado!=00, response=$response");
         }
 
         $semilla = $xml->xpath('/SII:RESPUESTA/SII:RESP_BODY/SEMILLA')[0];
@@ -124,17 +124,17 @@ class SiiConexion
             throw new Exception("Error obteniendo token, HTTP!=OK");
         }
 
-        if ($res->getHeader('content-type')[0] != 'application/xml') {
-            throw new Exception("Error obteniendo token, respuesta!=xml");
-        }
-
         $response = $res->getBody()->getContents();
+
+        if ($res->getHeader('content-type')[0] != 'application/xml') {
+            throw new Exception("Error obteniendo token, respuesta!=xml, response=$response");
+        }
 
         $xml = new SimpleXMLElement($response);
 
         $estado = (string)$xml->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0];
         if ($estado !== '00') {
-            throw new Exception("Error obteniendo token, estado!=00");
+            throw new Exception("Error obteniendo token, estado!=00, response=$response");
         }
 
         $token = $xml->xpath('/SII:RESPUESTA/SII:RESP_BODY/TOKEN')[0];
@@ -190,7 +190,7 @@ class SiiConexion
         $estado = (string)$xml->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0];
 
         if ($estado !== '00') {
-            throw new Exception("Error obteniendo semillaOld, estado!=00");
+            throw new Exception("Error obteniendo semillaOld, estado!=00, response=$response");
         }
 
         $semilla = $xml->xpath('/SII:RESPUESTA/SII:RESP_BODY/SEMILLA')[0];
@@ -225,7 +225,7 @@ class SiiConexion
         $estado = (string)$xml->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0];
 
         if ($estado !== '00') {
-            throw new Exception("Error obteniendo semillaOld, estado!=00");
+            throw new Exception("Error obteniendo semillaOld, estado!=00, response=$response");
         }
 
         $token = $xml->xpath('/SII:RESPUESTA/SII:RESP_BODY/TOKEN')[0];
