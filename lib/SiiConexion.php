@@ -77,7 +77,7 @@ class SiiConexion
 
         $response = $res->getBody()->getContents();
 
-        if ($res->getHeader('content-type')[0] != 'application/xml') {
+        if (strpos($res->getHeader('content-type')[0], 'application/xml') === null) {
             throw new Exception("Error obteniendo semilla, respuesta!=xml, response=$response");
         }
 
@@ -126,7 +126,7 @@ class SiiConexion
 
         $response = $res->getBody()->getContents();
 
-        if ($res->getHeader('content-type')[0] != 'application/xml') {
+        if (strpos($res->getHeader('content-type')[0], 'application/xml') === null) {
             throw new Exception("Error obteniendo token, respuesta!=xml, response=$response");
         }
 
