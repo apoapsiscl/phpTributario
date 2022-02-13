@@ -168,8 +168,8 @@ class SiiConexion
 
         $response = $res->getBody()->getContents();
 
-        if ($res->getHeader('content-type')[0] != 'application/json') {
-            throw new Exception("Error obteniendo semilla, respuesta!=xml, respuesta=$response");
+        if (strpos($res->getHeader('content-type')[0], 'application/json') === null) {
+            throw new Exception("Error obteniendo semilla, respuesta!=json, respuesta=$response");
         }
 
         $json = json_decode($response);
@@ -206,7 +206,7 @@ class SiiConexion
 
         $response = $res->getBody()->getContents();
 
-        if ($res->getHeader('content-type')[0] != 'application/json') {
+        if (strpos($res->getHeader('content-type')[0], 'application/json') === null) {
             throw new Exception("Error obteniendo estado de la boleta, respuesta!=json, respuesta=$response");
         }
 
@@ -376,8 +376,8 @@ class SiiConexion
             throw new Exception("Error obteniendo token, HTTP!=OK, {$res->getBody()->getContents()}");
         }
 
-        if ($res->getHeader('content-type')[0] != 'application/json') {
-            throw new Exception("Error obteniendo token, respuesta!=xml, {$res->getBody()->getContents()}");
+        if (strpos($res->getHeader('content-type')[0], 'application/json') === null) {
+            throw new Exception("Error obteniendo token, respuesta!=json, {$res->getBody()->getContents()}");
         }
 
         $response = $res->getBody()->getContents();
