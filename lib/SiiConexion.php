@@ -177,16 +177,19 @@ class SiiConexion
         return $json;
     }
 
-    public function getBoletaStatus($folio, $rutEmisor)
+    public function getBoletaStatus($folio, $rutEmisor, $rutReceptor, $monto, $fechaEmision)
     {
         $client = new GuzzleHttp\Client(['base_uri' => $this->_servidorSiiApi]);
 
         $rut = explode('-', $rutEmisor)[0];
         $dv = explode('-', $rutEmisor)[1];
 
+        $rutr = explode('-', $rutReceptor)[0];
+        $dvr = explode('-', $rutReceptor)[1];
+
         $res = $client->request(
             'GET',
-            "boleta.electronica/$rut-$dv-39-$folio/estado",
+            "boleta.electronica/$rut-$dv-39-$folio/estado?rut_receptor=$rutr&dv_receptor=$dvr&monto=$monto&fechaEmision=$fechaEmision",
             [
                 'http_errors' => false,
                 'headers' => [
