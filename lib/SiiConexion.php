@@ -166,11 +166,11 @@ class SiiConexion
             throw new Exception("Error obteniendo semilla, HTTP!=OK");
         }
 
-        if ($res->getHeader('content-type')[0] != 'application/json') {
-            throw new Exception("Error obteniendo semilla, respuesta!=xml");
-        }
-
         $response = $res->getBody()->getContents();
+
+        if ($res->getHeader('content-type')[0] != 'application/json') {
+            throw new Exception("Error obteniendo semilla, respuesta!=xml, respuesta=$response");
+        }
 
         $json = json_decode($response);
 
