@@ -177,6 +177,41 @@ class SiiConexion
         return $json;
     }
 
+    public function getBoletaStatus($folio, $rutEmisor)
+    {
+        $client = new GuzzleHttp\Client(['base_uri' => $this->_servidorSiiApi]);
+
+        $rut = explode('-', $rutEmisor)[0];
+        $dv = explode('-', $rutEmisor)[1];
+
+        $res = $client->request(
+            'GET',
+            "boleta.electronica/$rut-$dv-39-$folio/estado",
+            [
+                'http_errors' => false,
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'User-Agent' => 'Mozilla/4.0 ( compatible; PROG 1.0; Windows NT)',
+                    'Cookie' => 'TOKEN=' . $this->_tokenObtenido
+                ],
+            ]
+        );
+
+        if ($res->getStatusCode() != Teapot\StatusCode::OK) {
+            throw new Exception("Error obteniendo estado de la boleta, HTTP!=OK");
+        }
+
+        $response = $res->getBody()->getContents();
+
+        if ($res->getHeader('content-type')[0] != 'application/json') {
+            throw new Exception("Error obteniendo estado de la boleta, respuesta!=json, respuesta=$response");
+        }
+
+        $json = json_decode($response);
+
+        return $json;
+    }
+
     private function _getSemillaOld()
     {
         // Al necesitar SOAP ya no conviene usar Guzzle :c
