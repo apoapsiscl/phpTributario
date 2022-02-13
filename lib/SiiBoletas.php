@@ -210,7 +210,7 @@ class SiiBoletas
             $dte['Referencia'][] = $referenciaSii;
         }
 
-        if ($referencias === null) {
+        if (count($referencias) == 0) {
             unset($dte['Referencia']);
         }
 
