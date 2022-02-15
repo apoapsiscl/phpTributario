@@ -85,6 +85,10 @@ class SiiReporteVentas
                 $siiResumen['RangoUtilizados'][] = $rango;
             }
 
+            if (count($siiResumen['RangoUtilizados']) == 0 ) {
+                unset($siiResumen['RangoUtilizados']);
+            }
+
             $arrayConsumoFolios['DocumentoConsumoFolios']['Resumen'][] = $siiResumen;
         }
 
